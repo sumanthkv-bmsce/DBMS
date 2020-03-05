@@ -1,0 +1,89 @@
+create table actor(
+    act_id int not null,
+    act_name varchar(100) NOT NULL,
+    act_gender varchar(10) not null,
+    primary key (act_id)
+);
+
+commit;
+
+create table director(
+    dir_id int not null,
+    dir_name varchar(100) NOT NULL,
+    dir_phone varchar(10) not null,
+    primary key (dir_id)
+);
+commit;
+
+create table movies(
+    mov_id int not null,
+    dir_id int not null,
+    mov_title varchar(100) NOT NULL,
+    mov_year int not null,
+    mov_lang varchar(100) not null,
+    primary key(mov_id),
+    foreign key(dir_id) references director(dir_id)
+);
+
+create table movie_cast(
+    act_id int not null,
+    mov_id int not null,
+    role_cast varchar(100) not null,
+    foreign key(act_id) references actor(act_id),
+    foreign key(mov_id) references movies(mov_id)
+);
+
+commit;
+
+create table rating(
+    mov_id int not null,
+    rev_stars varchar(10) not null,
+    foreign key(mov_id) references movies(mov_id)
+);
+
+
+
+INSERT INTO actor VALUES (301,'ANUSHKA','F');
+INSERT INTO ACTOR VALUES (302,'PRABHAS','M');
+INSERT INTO ACTOR VALUES (303,'PUNITH','M');
+INSERT INTO ACTOR VALUES (304,'JERMY','M');
+
+INSERT INTO DIRECTOR VALUES (60,'RAJAMOULI', '8751611001');
+INSERT INTO DIRECTOR VALUES (61,'HITCHCOCK', '7766138911');
+INSERT INTO DIRECTOR VALUES (62,'FARAN', '9986776531');
+INSERT INTO DIRECTOR VALUES (63,'STEVEN SPIELBERG', '8989776530');
+
+
+INSERT INTO MOVIES VALUES (1001,60,'BAHUBALI-2', 2017, 'TELAGU');
+INSERT INTO MOVIES VALUES (1002,60,'BAHUBALI-1', 2015, 'TELAGU');
+INSERT INTO MOVIES VALUES (1003,61,'AKASH', 2008, 'KANNADA');
+INSERT INTO MOVIES VALUES (1004,63,'WAR HORSE', 2011, 'ENGLISH');
+
+INSERT INTO MOVIE_CAST VALUES (301, 1002, 'HEROINE');
+INSERT INTO MOVIE_CAST VALUES (301, 1001, 'HEROINE');
+INSERT INTO MOVIE_CAST VALUES (303, 1003, 'HERO');
+INSERT INTO MOVIE_CAST VALUES (303, 1002, 'GUEST');
+INSERT INTO MOVIE_CAST VALUES (304, 1004, 'HERO');
+
+INSERT INTO RATING VALUES (1001, 4);
+INSERT INTO RATING VALUES (1002, 2);
+
+commit;
+
+select mov_title from movies,director where movies.dir_id=director.dir_id and director.dir_name='HITCHCOCK';
+
+select * from actor,movie_cast where movie_cast.act_id=actor.act_id group by actor.act_id;
+
+select act_name from actor inner join movie_cast on actor.ACT_ID=movie_cast.act_id inner join movies on movie_cast.mov_id= movies.mov_id 
+and movies.mov_year not between 2000 and 2015; 
+
+update rating set rev_stars=5 where  director.dir_name='Steven Spielberg'and director.dir_id=movies.dir_id and movies.mov_id=rating.mov_id;
+
+
+
+
+
+
+
+
+
